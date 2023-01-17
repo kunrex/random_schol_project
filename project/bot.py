@@ -5,7 +5,7 @@ from services.chatBotService import ChatBot
 from services.readWriteService import ReadWriteService
 
 readWrite = ReadWriteService()
-config = readWrite.customOpen('/Users/kunalkashyap/Desktop/project/config.json')
+config = readWrite.customOpen('file location')
 
 def writeCustom(toWrite):
     readWrite.writeCustom(config["dataBasePath"], toWrite)
