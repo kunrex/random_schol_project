@@ -8,9 +8,6 @@ from services.readWriteService import ReadWriteService
 readWrite = ReadWriteService()
 config = readWrite.customOpen('file location')
 
-def writeCustom(toWrite):
-    readWrite.writeCustom(config["dataBasePath"], toWrite)
-
 dataBase = DataBaseService(config["dataBasePath"], readWrite)
 chatBot = ChatBot(config["GoogleCreedentialsVariable"], config["GoogleCredentialsPath"], config["projectId"], "123456789")
 
