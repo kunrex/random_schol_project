@@ -1,37 +1,30 @@
 import discord
 
 class ChatCommands:
-    dataBase = None
-    writeLocation = None
-    readWriteService = None
+    dataBaseService = None
 
-    def __init__(self, data, location, readWrite):
-        self.dataBase = data
-        self.writeLocation = location
-        self.readWriteService = readWrite
+    def __init__(self, dataBase):
+        self.dataBaseService = dataBase
 
     async def registerChannel(self, channelId, serverId):
-        if serverId in self.dataBase:
+        if self.dataBaseService.find(serverId):
             return "a channel is already registered for you server"
         else:
-            self.dataBase[serverId] = channelId
-            self.readWriteService.writeCustom(self.writeLocation, self.dataBase)
+            self.dataBaseService.change(serverId, channelId)
             return 'registered channel ;)'
 
     async def changeChannel(self, channelId, serverId):
-        if not (serverId in self.dataBase):
+        if not self.dataBaseService.find(serverId):
             return "a channel is not registered for your server"
         else:
-            self.dataBase[serverId] = channelId
-            self.readWriteService.writeCustom(self.writeLocation, self.dataBase)
+            self.dataBaseService.change(serverId, channelId)
             return 'changed resgitered channel :D'
     
     async def removeChannel(self, serverId):
-        if not (serverId in self.dataBase):
+        if not self.dataBaseService.find(serverId):
             return "a channel is not registered for your server"
         else:
-            del self.dataBase[serverId]
-            self.readWriteService.writeCustom(self.writeLocation, self.dataBase)
+            self.dataBaseService.remove(serverId)
             return 'removed resgitered channel :('
 
     commands = ['register', 'change',  'remove']
