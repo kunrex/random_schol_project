@@ -2,6 +2,7 @@ import discord
 
 from chatCommands import ChatCommands
 from services.chatBotService import ChatBot
+from services.dataBaseService import DataBaseService
 from services.readWriteService import ReadWriteService
 
 readWrite = ReadWriteService()
@@ -10,14 +11,14 @@ config = readWrite.customOpen('file location')
 def writeCustom(toWrite):
     readWrite.writeCustom(config["dataBasePath"], toWrite)
 
-dataBase = readWrite.customOpen(config["dataBasePath"])
+dataBase = DataBaseService(config["dataBasePath"], readWrite)
 chatBot = ChatBot(config["GoogleCreedentialsVariable"], config["GoogleCredentialsPath"], config["projectId"], "123456789")
 
 def matchPrefix(content):
     result = content.partition(config["prefix"])
     return [result[1] != '', result[2]]
 
-chatCommands = ChatCommands(dataBase, config["dataBasePath"], readWrite)
+chatCommands = ChatCommands(dataBase)
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
@@ -36,7 +37,7 @@ class MyClient(discord.Client):
                 await message.channel.send(result[1])
         else:
             guildId = str(message.guild.id)
-            if guildId in dataBase and message.channel.id == dataBase[guildId]:
+            if dataBase.find(guildId) and dataBase.result(guildId, message.channel.id):
                 await message.reply(await chatBot.response(message.content), mention_author = False)
             
 intents = discord.Intents.default()
