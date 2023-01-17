@@ -43,7 +43,6 @@ class ChatCommands:
         command = commandArgs[1]
         serverId = str(guild.id)
         if command == 'remove':
-            print('hi')
             return await self.removeChannel(serverId)
         else:
             if len(commandArgs) < 3 or type(commandArgs[2]) is not str:
