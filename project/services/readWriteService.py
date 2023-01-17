@@ -1,7 +1,5 @@
-from importlib.resources import Package
 import json
 
-Package
 class ReadWriteService:
     def customOpen(self, path):
         with open(path, 'r') as file:
